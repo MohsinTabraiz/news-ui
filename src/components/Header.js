@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 function Header() {
   const { token } = useContext(AuthContext);
@@ -9,15 +9,31 @@ function Header() {
     <header>
       <nav>
         <ul>
-          <li><Link to="/">Home</Link></li>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
           {!token && (
             <>
-              <li><Link to="/register">Register</Link></li>
-              <li><Link to="/login">Login</Link></li>
+              <li>
+                <Link to="/register">Register</Link>
+              </li>
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
             </>
           )}
           {token && (
-            <li><Link to="/logout">Logout</Link></li>
+            <>
+              <li>
+                <Link to="/articles">Articles</Link>
+              </li>
+              <li>
+                <Link to="/preferences">Preference</Link>
+              </li>
+              <li>
+                <Link to="/logout">Logout</Link>
+              </li>
+            </>
           )}
         </ul>
       </nav>
