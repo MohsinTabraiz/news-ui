@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
       setToken(token);
       localStorage.setItem("token", token);
       navigate("/");
-    } catch (err) { debugger
+    } catch (err) {
       if (err.response && err.response.data && err.response.data.data) {
         const errorMessages = Object.values(err.response.data.data);
         setError(errorMessages.join("\n"));

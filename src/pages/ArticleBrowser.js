@@ -19,7 +19,7 @@ const ArticleBrowser = () => {
     if (searchKeyword) {
       updatedParams.keyword = searchKeyword;
     }
-    if (filterCategory) { debugger
+    if (filterCategory) {
       updatedParams.category_id = filterCategory;
     }
     if (filterSource) {
@@ -49,7 +49,7 @@ const ArticleBrowser = () => {
     }
   };
 
-  const resetFilters = () => { debugger;
+  const resetFilters = () => {
     setParams({});
     setSearchKeyword("");
     setFilterCategory("");
