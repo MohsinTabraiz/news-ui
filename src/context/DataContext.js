@@ -9,15 +9,27 @@ export const DataProvider = ({ children }) => {
     sources: [],
     categories: [],
     articles: [],
+    pagination:{
+      current_page: 0,
+      per_page: 0,
+      last_page: 0,
+      total: 0,
+    }
   });
   const [preferences, setPreferences] = useState({
     authorsPreferred: [],
     sourcesPreferred: [],
     categoriesPreferred: [],
     articlesPreferred: [],
+    pagination:{
+      current_page: 0,
+      per_page: 0,
+      last_page: 0,
+      total: 0,
+    }
   });
   const [error, setError] = useState(null);
-
+  
   const authInterceptor = axios.interceptors.request.use(
     (config) => {
       const token = localStorage.getItem("token");
@@ -35,26 +47,32 @@ export const DataProvider = ({ children }) => {
     try {
       const response = await axios.get(
         process.env.REACT_APP_API_BASE_URL + "/get-all-data",
-        { params }
+        {params: {...params, limit: 10}}
       );
       const { authors, sources, categories, articles } = response.data.data;
-      setAllData({ authors, sources, categories, articles });
+      const {data:articlesData, current_page, last_page, per_page, total} = articles;
+
+      setAllData({ authors, sources, categories, articles: articlesData, pagination: {current_page, last_page, per_page, total} });
     } catch (err) {
       setError("An error occurred while fetching data. Please try again.");
     }
   };
 
-  const fetchPreferences = async () => {
-    try {
+  const fetchPreferences = async (params) => { 
+    try { 
       const response = await axios.get(
-        process.env.REACT_APP_API_BASE_URL + "/get-preferences"
+        process.env.REACT_APP_API_BASE_URL + "/get-preferences",
+        { params: {...params} }
       );
       const { articles, authors, categories, sources } = response.data.data;
+      const {data:articlesData, current_page, last_page, per_page, total} = articles;
+
       setPreferences({
         authorsPreferred: authors,
         sourcesPreferred: sources,
         categoriesPreferred: categories,
-        articlesPreferred: articles,
+        articlesPreferred: articlesData,
+        pagination: {current_page, last_page, per_page, total}
       });
     } catch (err) {
       setError(
@@ -82,8 +100,8 @@ export const DataProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchAllData();
-    fetchPreferences();
+    fetchAllData({page: 1});
+    fetchPreferences({page: 1});
 
     return () => {
       // Clean up the interceptor when the component is unmounted

@@ -10,9 +10,10 @@ const LogoutForm = () => {
   };
 
   return (
-    <div>
-      <h2>Logout</h2>
-      <button onClick={handleLogout}>Logout</button>
+    <div className="d-flex justify-content-center">
+      <button className="btn btn-primary" onClick={handleLogout}>
+        Logout
+      </button>
     </div>
   );
 };

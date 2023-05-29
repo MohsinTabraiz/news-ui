@@ -1,14 +1,15 @@
-import React, { useContext, useState } from 'react';
-import { AuthContext } from '../../context/AuthContext';
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 function RegisterForm() {
   const { registerUser, error } = useContext(AuthContext);
   const [userData, setUserData] = useState({
-    firstname: '',
-    lastname: '',
-    email: '',
-    password: '',
+    firstname: "",
+    lastname: "",
+    email: "",
+    password: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,65 +20,80 @@ function RegisterForm() {
   };
 
   const handleSubmit = async (e) => {
+    setIsLoading(true);
     e.preventDefault();
 
     try {
-       await registerUser(userData);
+      await registerUser(userData);
     } catch (err) {
-      // Error handling is done in the AuthContext
-      // We are accessing the error message from the error state in the AuthContext
-      console.log(error);
+      //
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>
-        <label>
-          First Name:
-          <input
-            type="text"
-            name="firstname"
-            value={userData.firstname}
-            onChange={handleChange}
-          />
-        </label>
+      <div className="form-group">
+        <label htmlFor="firstname">First Name:</label>
+        <input
+          type="text"
+          className="form-control"
+          id="firstname"
+          name="firstname"
+          value={userData.firstname}
+          onChange={handleChange}
+          required
+        />
       </div>
-      <div>
-        <label>
-          Last Name:
-          <input
-            type="text"
-            name="lastname"
-            value={userData.lastname}
-            onChange={handleChange}
-          />
-        </label>
+      <div className="form-group">
+        <label htmlFor="lastname">Last Name:</label>
+        <input
+          type="text"
+          className="form-control"
+          id="lastname"
+          name="lastname"
+          value={userData.lastname}
+          onChange={handleChange}
+          required
+        />
       </div>
-      <div>
-        <label>
-          Email:
-          <input
-            type="email"
-            name="email"
-            value={userData.email}
-            onChange={handleChange}
-          />
-        </label>
+      <div className="form-group">
+        <label htmlFor="email">Email:</label>
+        <input
+          type="email"
+          className="form-control"
+          id="email"
+          name="email"
+          value={userData.email}
+          onChange={handleChange}
+          required
+        />
       </div>
-      <div>
-        <label>
-          Password:
-          <input
-            type="password"
-            name="password"
-            value={userData.password}
-            onChange={handleChange}
-          />
-        </label>
+      <div className="form-group mb-3">
+        <label htmlFor="password">Password:</label>
+        <input
+          type="password"
+          className="form-control"
+          id="password"
+          name="password"
+          value={userData.password}
+          onChange={handleChange}
+          required
+        />
       </div>
-      {error && <div style={{ color: 'red' }}>{error}</div>}
-      <button type="submit">Register</button>
+      {error && <div style={{ color: "red" }}>{error}</div>}
+      <button type="submit" className="btn btn-primary">
+        {isLoading ? (
+          <span
+            className="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
+          ></span>
+        ) : (
+          "Register"
+        )}
+      </button>
     </form>
   );
 }

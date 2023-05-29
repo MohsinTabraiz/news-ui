@@ -9,6 +9,7 @@ import Header from "./components/Header";
 import { DataProvider } from "./context/DataContext";
 import ArticleBrowser from "./pages/ArticleBrowser";
 import PreferenceManager from "./pages/PreferencesManager";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
