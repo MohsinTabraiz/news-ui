@@ -11,6 +11,7 @@ const ArticleBrowser = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [params, setParams] = useState({});
+  const [selectedArticle, setSelectedArticle] = useState(null);
 
   useEffect(() => {
     // Update the params state
@@ -56,7 +57,7 @@ const ArticleBrowser = () => {
     setFilterSource("");
     setStartDate(null);
     setEndDate(null);
-    fetchAllData({page:1});
+    fetchAllData({ page: 1 });
   };
 
   const currentArticles = allData.articles;
@@ -70,6 +71,14 @@ const ArticleBrowser = () => {
   // Next page
   const nextPage = () => {
     fetchAllData({ ...params, page: pagination.current_page + 1 });
+  };
+
+  const showArticleModal = (article) => {
+    setSelectedArticle(article);
+  };
+
+  const closeArticleModal = () => {
+    setSelectedArticle(null);
   };
 
   return (
@@ -159,7 +168,14 @@ const ArticleBrowser = () => {
             <tr key={article.id}>
               <td>{article.id}</td>
               <td>{article.title}</td>
-              <td>{article.content}</td>
+              <td>
+                <button
+                  className="btn btn-link"
+                  onClick={() => showArticleModal(article)}
+                >
+                  View Content
+                </button>
+              </td>
               <td>{article.published_at}</td>
               <td>{article.author?.name}</td>
               <td>{article.source?.title}</td>
@@ -192,6 +208,31 @@ const ArticleBrowser = () => {
           </button>
         </li>
       </ul>
+
+      {selectedArticle && (
+        <div className="modal" style={{ display: "block" }}>
+          <div className="modal-dialog modal-dialog-centered">
+            <div
+              className="modal-content"
+              style={{ backgroundColor: "#f8f9fa" }}
+            >
+              <div className="modal-header">
+                <h5 className="modal-title">{selectedArticle.title}</h5>
+                <button
+                  type="button"
+                  className="close"
+                  onClick={closeArticleModal}
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <p>{selectedArticle.content}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

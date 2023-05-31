@@ -20,6 +20,7 @@ const PreferenceManager = () => {
   const [showAuthorCheckboxes, setShowAuthorCheckboxes] = useState(false);
   const [showSourceCheckboxes, setShowSourceCheckboxes] = useState(false);
   const [showCategoryCheckboxes, setShowCategoryCheckboxes] = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState(null);
 
   useEffect(() => {
     if (preferences) {
@@ -96,6 +97,14 @@ const PreferenceManager = () => {
   // Next page
   const nextPage = () => {
     fetchPreferences({ page: pagination.current_page + 1 });
+  };
+
+  const showArticleModal = (article) => {
+    setSelectedArticle(article);
+  };
+
+  const closeArticleModal = () => {
+    setSelectedArticle(null);
   };
 
   return (
@@ -342,7 +351,14 @@ const PreferenceManager = () => {
             <tr key={article.id}>
               <td>{article.id}</td>
               <td>{article.title}</td>
-              <td>{article.content}</td>
+              <td>
+                <button
+                  className="btn btn-link"
+                  onClick={() => showArticleModal(article)}
+                >
+                  View Content
+                </button>
+              </td>
               <td>{article.published_at}</td>
               <td>{article.author?.name}</td>
               <td>{article.source?.title}</td>
@@ -375,6 +391,32 @@ const PreferenceManager = () => {
           </button>
         </li>
       </ul>
+
+
+      {selectedArticle && (
+        <div className="modal" style={{ display: "block" }}>
+          <div className="modal-dialog modal-dialog-centered">
+            <div
+              className="modal-content"
+              style={{ backgroundColor: "#f8f9fa" }}
+            >
+              <div className="modal-header">
+                <h5 className="modal-title">{selectedArticle.title}</h5>
+                <button
+                  type="button"
+                  className="close"
+                  onClick={closeArticleModal}
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <p>{selectedArticle.content}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
