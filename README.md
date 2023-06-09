@@ -13,3 +13,4 @@ You may run them like this:
 - Redux
 - More proper and even more centralized error handling
 - Tests
+- Typescript
